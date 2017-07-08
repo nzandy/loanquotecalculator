@@ -23,7 +23,7 @@ namespace QuoteCalculator.Models {
 			return power - 1;
 		}
 		public int GetSatisfiedAmount(){
-			return LoanOffers.Sum(l => l.Amount);
+			return LoanOffers.Sum(l => l.Principle);
 		}
 
 		public bool IsSatisfied(){
@@ -39,11 +39,11 @@ namespace QuoteCalculator.Models {
 			newOffer.Rate = lender.InterestRate;
 			// If we can satisfy the remainder of this loan, do so.
 			 if (lender.AvailableAmount >= requiredAmount){
-				newOffer.Amount = requiredAmount;
+				newOffer.Principle = requiredAmount;
 			 } 
 			 // Add all available money from this lender to loan and continue.
 			 else{
-				newOffer.Amount = lender.AvailableAmount;
+				newOffer.Principle = lender.AvailableAmount;
 			 }
 			LoanOffers.Add(newOffer);	 
 		}
