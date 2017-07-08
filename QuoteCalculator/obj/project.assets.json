@@ -7080,16 +7080,16 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/andrewdavies/Dev/QuoteCalculator/QuoteCalculator.csproj",
+      "projectUniqueName": "/Users/andrewdavies/Dev/ZopaQuoteCalculator/QuoteCalculator/QuoteCalculator.csproj",
       "projectName": "QuoteCalculator",
-      "projectPath": "/Users/andrewdavies/Dev/QuoteCalculator/QuoteCalculator.csproj",
-      "outputPath": "/Users/andrewdavies/Dev/QuoteCalculator/obj/",
+      "projectPath": "/Users/andrewdavies/Dev/ZopaQuoteCalculator/QuoteCalculator/QuoteCalculator.csproj",
+      "outputPath": "/Users/andrewdavies/Dev/ZopaQuoteCalculator/QuoteCalculator/obj/",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
       "files": {
-        "lib/netcoreapp1.1/QuoteCalculator.dll": "/Users/andrewdavies/Dev/QuoteCalculator/bin/placeholder/netcoreapp1.1/QuoteCalculator.dll"
+        "lib/netcoreapp1.1/QuoteCalculator.dll": "/Users/andrewdavies/Dev/ZopaQuoteCalculator/QuoteCalculator/bin/placeholder/netcoreapp1.1/QuoteCalculator.dll"
       },
       "frameworks": {
         "netcoreapp1.1": {

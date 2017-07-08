@@ -7,7 +7,9 @@ namespace QuoteCalculator.Models {
 		public string LenderName {get; set;}
 
 		public double GetTotalRepaymentValue(){
-			return Amount * Math.Pow((1 + Rate), 3);
+			double monthlyInterestRate = Rate / 12;
+			var x = 1 - Math.Pow((1 + monthlyInterestRate), -36);
+			return ((monthlyInterestRate * Amount) / x) * 36;
 		}
 		public double GetMonthlyRepaymentValue() {
 			return GetTotalRepaymentValue() / 36;
