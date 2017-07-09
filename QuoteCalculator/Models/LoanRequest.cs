@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace QuoteCalculator.Models {
 	public class LoanRequest {
-		private int _requestAmount;
-		public LoanRequest (int requestAmount){
-			_requestAmount = requestAmount;
+		private int _principle;
+		public LoanRequest (int principle){
+			_principle = principle;
 			LoanOffers = new List<LoanOffer>();
 		}
 		public List<LoanOffer> LoanOffers {get; set;}
@@ -18,22 +18,24 @@ namespace QuoteCalculator.Models {
 			return LoanOffers.Sum(l => l.GetMonthlyRepaymentValue());
 		}
 		public double GetCombinedInterestRate() { 
-			var total = GetTotalRepaymentValue();
-			double power = Math.Pow(total / (double)_requestAmount, (double)1/3);
-			return power - 1;
+			double combinedInterestRate = 0;
+			foreach (LoanOffer loan in LoanOffers){
+				combinedInterestRate += (loan.Principle / (double) _principle) * loan.Rate;
+			}
+			return Math.Round(combinedInterestRate, 2);
 		}
 		public int GetSatisfiedAmount(){
 			return LoanOffers.Sum(l => l.Principle);
 		}
 
 		public bool IsSatisfied(){
-			if (GetSatisfiedAmount() == _requestAmount) return true;
+			if (GetSatisfiedAmount() == _principle) return true;
 
 			return false;
 		}
 
 		public void AddLenderToLoan(AvailableLender lender){
-			int requiredAmount = _requestAmount - GetSatisfiedAmount();
+			int requiredAmount = _principle - GetSatisfiedAmount();
 			var newOffer = new LoanOffer();
 			newOffer.LenderName = lender.LenderName;
 			newOffer.Rate = lender.InterestRate;
