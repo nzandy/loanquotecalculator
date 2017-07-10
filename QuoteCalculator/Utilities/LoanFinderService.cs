@@ -11,13 +11,14 @@ namespace QuoteCalculator.Utilities {
 		private const int MINIMUM_LOAN_AMOUNT = 1000;
 		private const int MAXIMUM_LOAN_AMOUNT = 15000;
 		private const int INCREMENT_AMOUNT = 100;
+		private const int LOAN_TERM_MONTHS = 36;
 		public LoanFinderService(ILenderRepository lenderRepo){
 			_lenderRepo = lenderRepo;
 		}
 
 		public LoanRequest FindBestRate(int loanValue){
 			CheckAmountIsValid(loanValue);
-			var request = new LoanRequest(loanValue);
+			var request = new LoanRequest(loanValue, LOAN_TERM_MONTHS);
 			// Get available lenders and sort by best interest rate.
 			List<AvailableLender> availableLenders = _lenderRepo.GetLenders()
 				.OrderBy(l => l.InterestRate).ToList();

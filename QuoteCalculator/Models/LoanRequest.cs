@@ -4,12 +4,15 @@ using System.Linq;
 
 namespace QuoteCalculator.Models {
 	public class LoanRequest {
-		public int Principle {get; set;}
-		public LoanRequest (int principle){
+		private List<LoanOffer> _loanOffers {get; set;}
+		private int _loanTermMonths {get; set;}
+		public LoanRequest (int principle, int loanTermMonths){
 			Principle = principle;
 			_loanOffers = new List<LoanOffer>();
+			_loanTermMonths = loanTermMonths;
 		}
-		private List<LoanOffer> _loanOffers {get; set;}
+		public int Principle {get; set;}
+
 		public double GetTotalRepaymentAmount(){
 			return _loanOffers.Sum(l => l.GetTotalRepaymentValue());
 		}
@@ -47,7 +50,7 @@ namespace QuoteCalculator.Models {
 
 		public void AddLenderToLoan(AvailableLender lender){
 			int requiredAmount = Principle - GetCurrentSatisfiedAmount();
-			var newOffer = new LoanOffer();
+			var newOffer = new LoanOffer(_loanTermMonths);
 			newOffer.LenderName = lender.LenderName;
 			newOffer.Rate = lender.InterestRate;
 			// If we can satisfy the remainder of this loan, do so.
