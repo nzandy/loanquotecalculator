@@ -4,38 +4,49 @@ using System.Linq;
 
 namespace QuoteCalculator.Models {
 	public class LoanRequest {
-		private int _principle;
+		public int Principle {get; set;}
 		public LoanRequest (int principle){
-			_principle = principle;
-			LoanOffers = new List<LoanOffer>();
+			Principle = principle;
+			_loanOffers = new List<LoanOffer>();
 		}
-		public List<LoanOffer> LoanOffers {get; set;}
-
-		public double GetTotalRepaymentValue(){
-			return LoanOffers.Sum(l => l.GetTotalRepaymentValue());
+		private List<LoanOffer> _loanOffers {get; set;}
+		public double GetTotalRepaymentAmount(){
+			return _loanOffers.Sum(l => l.GetTotalRepaymentValue());
 		}
-		public double GetMonthlyRepaymentValue() {
-			return LoanOffers.Sum(l => l.GetMonthlyRepaymentValue());
+		public double GetMonthlyRepaymentAmount() {
+			return _loanOffers.Sum(l => l.GetMonthlyRepaymentValue());
 		}
 		public double GetCombinedInterestRate() { 
 			double combinedInterestRate = 0;
-			foreach (LoanOffer loan in LoanOffers){
-				combinedInterestRate += (loan.Principle / (double) _principle) * loan.Rate;
+			foreach (LoanOffer loan in _loanOffers){
+				combinedInterestRate += (loan.Principle / (double) Principle) * loan.Rate;
 			}
 			return Math.Round(combinedInterestRate, 2);
 		}
-		public int GetSatisfiedAmount(){
-			return LoanOffers.Sum(l => l.Principle);
+		private int GetCurrentSatisfiedAmount(){
+			return _loanOffers.Sum(l => l.Principle);
 		}
 
 		public bool IsSatisfied(){
-			if (GetSatisfiedAmount() == _principle) return true;
+			if (GetCurrentSatisfiedAmount() == Principle) return true;
 
 			return false;
 		}
 
+		public void PrintLoanDetails(){
+			if (IsSatisfied()) {
+				Console.WriteLine("Requested amount: £{0}", Principle);
+				Console.WriteLine("Rate: {0}%", GetCombinedInterestRate() * 100);
+				Console.WriteLine("Monthly repayment: £{0}", GetMonthlyRepaymentAmount());
+				Console.WriteLine("Total Repayment: £{0}", GetTotalRepaymentAmount());
+			} else{
+				Console.WriteLine("Our lenders are currently unavailable to service your loan.");
+				Console.WriteLine("Please try again later, or contact our Customer Service team.");
+			}
+		}
+
 		public void AddLenderToLoan(AvailableLender lender){
-			int requiredAmount = _principle - GetSatisfiedAmount();
+			int requiredAmount = Principle - GetCurrentSatisfiedAmount();
 			var newOffer = new LoanOffer();
 			newOffer.LenderName = lender.LenderName;
 			newOffer.Rate = lender.InterestRate;
@@ -47,7 +58,7 @@ namespace QuoteCalculator.Models {
 			 else{
 				newOffer.Principle = lender.AvailableAmount;
 			 }
-			LoanOffers.Add(newOffer);	 
+			_loanOffers.Add(newOffer);
 		}
 	}
 }
