@@ -13,19 +13,25 @@ namespace QuoteCalculator.Repositories {
 		public CsvLenderRepository(string filePath){
 			_filePath = filePath;
 		}
-		public IEnumerable<AvailableLender> GetLenders(){
-			var offers = new List<AvailableLender>();
+		public IEnumerable<Lender> GetLenders(){
+			var offers = new List<Lender>();
+			int index = 0;
 			using (var stream = GetFileStream() ) { 
 				try{
 					string header = stream.ReadLine(); // Ignore first line.
 					while (!stream.EndOfStream) {
-						var offer = new AvailableLender();
-						string line = stream.ReadLine();
-						string[] values = line.Split(',');
-						offer.LenderName = values[0];
-						offer.InterestRate = Double.Parse(values[1]);
-						offer.AvailableAmount = Int16.Parse(values[2]);
-						offers.Add(offer);
+						try {
+							string line = stream.ReadLine();
+							string[] values = line.Split(',');
+							string lenderName = values[0];
+							double interestRate = Double.Parse(values[1]);
+							int availableAmount = Int16.Parse(values[2]);
+							var offer = new Lender(lenderName, availableAmount, interestRate);
+							offers.Add(offer);
+							index++;
+						} catch(Exception ex){
+							Console.WriteLine("Error parsing lender at line: {0}. skipping. Ex:{1}", index, ex.Message);
+						}
 					}
 				} catch (Exception ex){
 					Console.WriteLine("Error reading from file, exception: {0}", ex.Message);

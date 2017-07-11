@@ -20,7 +20,7 @@ namespace QuoteCalculator.Utilities {
 			CheckAmountIsValid(loanValue);
 			var request = new LoanRequest(loanValue, LOAN_TERM_MONTHS);
 			// Get available lenders and sort by best interest rate.
-			List<AvailableLender> availableLenders = _lenderRepo.GetLenders()
+			List<Lender> availableLenders = _lenderRepo.GetLenders()
 				.OrderBy(l => l.InterestRate).ToList();
 			
 			foreach (var lender in availableLenders){

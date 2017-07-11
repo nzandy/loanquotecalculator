@@ -26,16 +26,11 @@ namespace QuoteCalculator.Models {
 			}
 			return Math.Round(combinedInterestRate, 2);
 		}
-		private int GetCurrentSatisfiedAmount(){
-			return _loanOffers.Sum(l => l.Principle);
-		}
-
 		public bool IsSatisfied(){
 			if (GetCurrentSatisfiedAmount() == Principle) return true;
 
 			return false;
 		}
-
 		public void PrintLoanDetails(){
 			if (IsSatisfied()) {
 				Console.WriteLine("Requested amount: £{0}", Principle);
@@ -48,10 +43,10 @@ namespace QuoteCalculator.Models {
 			}
 		}
 
-		public void AddLenderToLoan(AvailableLender lender){
+		public void AddLenderToLoan(Lender lender){
 			int requiredAmount = Principle - GetCurrentSatisfiedAmount();
 			var newOffer = new LoanOffer(_loanTermMonths);
-			newOffer.LenderName = lender.LenderName;
+			newOffer.LenderName = lender.Name;
 			newOffer.Rate = lender.InterestRate;
 			// If we can satisfy the remainder of this loan, do so.
 			 if (lender.AvailableAmount >= requiredAmount){
@@ -62,6 +57,9 @@ namespace QuoteCalculator.Models {
 				newOffer.Principle = lender.AvailableAmount;
 			 }
 			_loanOffers.Add(newOffer);
+		}
+		private int GetCurrentSatisfiedAmount(){
+			return _loanOffers.Sum(l => l.Principle);
 		}
 	}
 }
