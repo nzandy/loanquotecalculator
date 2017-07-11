@@ -10,7 +10,7 @@ namespace QuoteCalculator.Tests {
 			var lender = new Lender("Bob", 1000, 0.04);
 			var request = new LoanRequest(1000, 36);
 			request.AddLenderToLoan(lender);
-			Assert.True(request.IsSatisfied());
+			Assert.True(request.IsSatisfied(), "The lender has enough funds to satisfy the Request.");
 		}
 
 		[Fact]
@@ -18,7 +18,7 @@ namespace QuoteCalculator.Tests {
 			var lender = new Lender("Bob", 1000, 0.04);
 			var request = new LoanRequest(1000, 36);
 			request.AddLenderToLoan(lender);
-			Assert.False(request.IsSatisfied(), "The total amount of request hasn't been satisfied by the lender");
+			Assert.False(request.IsSatisfied(), "The lender does not have enough funds to satisfy the Request");
 		}
 
 		[Fact]

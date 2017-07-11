@@ -28,7 +28,6 @@ namespace QuoteCalculator.Models {
 		}
 		public bool IsSatisfied(){
 			if (GetCurrentSatisfiedAmount() == Principle) return true;
-
 			return false;
 		}
 		public void PrintLoanDetails(){
@@ -45,9 +44,11 @@ namespace QuoteCalculator.Models {
 
 		public void AddLenderToLoan(Lender lender){
 			int requiredAmount = Principle - GetCurrentSatisfiedAmount();
-			var newOffer = new LoanOffer(_loanTermMonths);
-			newOffer.LenderName = lender.Name;
-			newOffer.Rate = lender.InterestRate;
+			var newOffer = new LoanOffer(_loanTermMonths){
+				LenderName = lender.Name,
+				Rate = lender.InterestRate
+			};
+
 			// If we can satisfy the remainder of this loan, do so.
 			 if (lender.AvailableAmount >= requiredAmount){
 				newOffer.Principle = requiredAmount;

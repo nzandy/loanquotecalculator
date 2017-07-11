@@ -5,16 +5,22 @@ using QuoteCalculator.Models;
 
 namespace QuoteCalculator.Repositories {
 	/*
-		Methods that deal with fetching available lenders from a source.
+		Methods that deal with fetching / caching available lenders from a CSV file..
 	 */
 	public class CsvLenderRepository : ILenderRepository{
 		private string _filePath;
+		private List<Lender> _lenders;
 
 		public CsvLenderRepository(string filePath){
 			_filePath = filePath;
 		}
 		public IEnumerable<Lender> GetLenders(){
-			var offers = new List<Lender>();
+			// If we have already parsed the CSV, return the collection.
+			if (_lenders != null) {
+				return _lenders;
+			}
+
+			_lenders = new List<Lender>();
 			int index = 0;
 			using (var stream = GetFileStream() ) { 
 				try{
@@ -26,8 +32,8 @@ namespace QuoteCalculator.Repositories {
 							string lenderName = values[0];
 							double interestRate = Double.Parse(values[1]);
 							int availableAmount = Int16.Parse(values[2]);
-							var offer = new Lender(lenderName, availableAmount, interestRate);
-							offers.Add(offer);
+							var newLender = new Lender(lenderName, availableAmount, interestRate);
+							_lenders.Add(newLender);
 							index++;
 						} catch(Exception ex){
 							Console.WriteLine("Error parsing lender at line: {0}. skipping. Ex:{1}", index, ex.Message);
@@ -37,7 +43,7 @@ namespace QuoteCalculator.Repositories {
 					Console.WriteLine("Error reading from file, exception: {0}", ex.Message);
 				}
 			}
-			return offers;
+			return _lenders;
 		}
 
 		private StreamReader GetFileStream(){
