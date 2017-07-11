@@ -8,9 +8,9 @@ using QuoteCalculator.Repositories;
 namespace QuoteCalculator.Utilities {
 	public class LoanFinderService {
 		private ILenderRepository _lenderRepo;
-		private const int MINIMUM_LOAN_AMOUNT = 1000;
-		private const int MAXIMUM_LOAN_AMOUNT = 15000;
-		private const int INCREMENT_AMOUNT = 100;
+		public const int MINIMUM_LOAN_AMOUNT = 1000;
+		public const int MAXIMUM_LOAN_AMOUNT = 15000;
+		public const int INCREMENT_AMOUNT = 100;
 		private const int LOAN_TERM_MONTHS = 36;
 		public LoanFinderService(ILenderRepository lenderRepo){
 			_lenderRepo = lenderRepo;
