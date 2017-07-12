@@ -42,5 +42,11 @@ namespace QuoteCalculator.Tests {
 		public void ParseLenderAvailableAmount(){
 			Assert.Equal(640, _firstRecord.AvailableAmount);
 		}
+
+		[Fact]
+		public void InvalidFilePathThrowsException(){
+			string path = "./InvalidPath/MarketDataForExercise.csv";
+			Assert.Throws(typeof(ArgumentException), () => new CsvLenderRepository(path));
+		}
 	}
 }

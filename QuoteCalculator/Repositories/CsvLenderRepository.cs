@@ -12,6 +12,9 @@ namespace QuoteCalculator.Repositories {
 		private List<Lender> _lenders;
 
 		public CsvLenderRepository(string filePath){
+			if (!File.Exists(filePath)){
+				throw new ArgumentException(string.Format("File does not exist: {0}", filePath));
+			}
 			_filePath = filePath;
 		}
 		public IEnumerable<Lender> GetLenders(){
