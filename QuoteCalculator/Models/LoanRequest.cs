@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace QuoteCalculator.Models {
+
+	/// <summary>
+	/// Represents a request from a potential Borrower for a Zopa loan.
+	/// This loan can be satisfied by multiple Zopa lenders.
+	/// </summary>
 	public class LoanRequest {
 		private List<LoanOffer> _loanOffers {get; set;}
 		private int _loanTermMonths {get; set;}
@@ -11,6 +16,7 @@ namespace QuoteCalculator.Models {
 			_loanOffers = new List<LoanOffer>();
 			_loanTermMonths = loanTermMonths;
 		}
+
 		public int Principle {get; set;}
 
 		public double GetTotalRepaymentAmount(){
@@ -19,6 +25,11 @@ namespace QuoteCalculator.Models {
 		public double GetMonthlyRepaymentAmount() {
 			return _loanOffers.Sum(l => l.GetMonthlyRepaymentValue());
 		}
+
+		/// <summary>
+		/// Different lenders may have different interest rates so we need to calculate
+		/// the overall rate of interest on the combined amount.
+		/// </summary>
 		public double GetCombinedInterestRate() { 
 			double combinedInterestRate = 0;
 			foreach (LoanOffer loan in _loanOffers){
@@ -26,6 +37,11 @@ namespace QuoteCalculator.Models {
 			}
 			return Math.Round(combinedInterestRate, 2);
 		}
+
+		/// <summary>
+		/// Returns true if the current collection of lender offers added have enough combined
+		/// funds to satisfy the principle of this request.
+		/// </summary>
 		public bool IsSatisfied(){
 			if (GetCurrentSatisfiedAmount() == Principle) return true;
 			return false;

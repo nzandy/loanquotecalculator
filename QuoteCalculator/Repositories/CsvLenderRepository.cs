@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using QuoteCalculator.Models;
 
 namespace QuoteCalculator.Repositories {
-	/*
-		Methods that deal with fetching / caching available lenders from a CSV file..
-	 */
+	/// <summary>
+	/// Retrieves, parses and caches Lenders from a given CSV file.
+	/// </summary>
 	public class CsvLenderRepository : ILenderRepository{
 		private string _filePath;
 		private List<Lender> _lenders;
@@ -22,20 +22,21 @@ namespace QuoteCalculator.Repositories {
 			if (_lenders != null) {
 				return _lenders;
 			}
+			// Otherwise retrieve them from the given file.
+			ParseLendersFromCsvFile();
+			return _lenders;
+		}
 
+		private void ParseLendersFromCsvFile(){
 			_lenders = new List<Lender>();
 			int index = 0;
 			using (var stream = GetFileStream() ) { 
 				try{
-					string header = stream.ReadLine(); // Ignore first line.
+					stream.ReadLine(); // Ignore header line.
 					while (!stream.EndOfStream) {
 						try {
 							string line = stream.ReadLine();
-							string[] values = line.Split(',');
-							string lenderName = values[0];
-							double interestRate = Double.Parse(values[1]);
-							int availableAmount = Int16.Parse(values[2]);
-							var newLender = new Lender(lenderName, availableAmount, interestRate);
+							Lender newLender = ParseLenderFromCsvLine(line);
 							_lenders.Add(newLender);
 							index++;
 						} catch(Exception ex){
@@ -46,7 +47,14 @@ namespace QuoteCalculator.Repositories {
 					Console.WriteLine("Error reading from file, exception: {0}", ex.Message);
 				}
 			}
-			return _lenders;
+		}
+
+		private Lender ParseLenderFromCsvLine(string line){
+			string[] values = line.Split(',');
+			string lenderName = values[0];
+			double interestRate = Double.Parse(values[1]);
+			int availableAmount = Int16.Parse(values[2]);
+			return new Lender(lenderName, availableAmount, interestRate);
 		}
 
 		private StreamReader GetFileStream(){
