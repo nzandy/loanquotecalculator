@@ -26,7 +26,7 @@ namespace QuoteCalculator.Tests {
 		[Fact]
 		public void ExceedingMaximumRequestAmount(){
 			Assert.Throws(typeof(ArgumentOutOfRangeException), () => 
-			_loanService.FindBestRate(LoanFinderService.MAXIMUM_LOAN_AMOUNT + 1));
+			_loanService.FindBestRate(LoanFinderService.MAXIMUM_LOAN_AMOUNT + 100));
 		}
 
 		[Fact]

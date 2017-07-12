@@ -15,7 +15,7 @@ namespace QuoteCalculator.Tests {
 
 		[Fact]
 		public void UnsatisifiedLoanRequest(){
-			var lender = new Lender("Bob", 1000, 0.04);
+			var lender = new Lender("Bob", 900, 0.04);
 			var request = new LoanRequest(1000, 36);
 			request.AddLenderToLoan(lender);
 			Assert.False(request.IsSatisfied(), "The lender does not have enough funds to satisfy the Request");

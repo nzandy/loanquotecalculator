@@ -10,8 +10,8 @@ namespace QuoteCalculator {
 		private static int _loanAmount;
 		private static void Main(string[] args) {
 			ProcessArgs(args);
-			var loanRepo = new CsvLenderRepository(_lendersFilePath);
-			var loanService = new LoanFinderService(loanRepo);
+			var lenderRepo = new CsvLenderRepository(_lendersFilePath);
+			var loanService = new LoanFinderService(lenderRepo);
 			LoanRequest request;
 			try {
 				request = loanService.FindBestRate(_loanAmount);
