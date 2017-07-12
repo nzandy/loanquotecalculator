@@ -6,6 +6,11 @@ using QuoteCalculator.Models;
 using QuoteCalculator.Repositories;
 
 namespace QuoteCalculator.Utilities {
+
+	/// <summary>
+	/// Responsible for taking requests for loans from borrows and creating loans from the available list
+	/// of Zopa lenders. We attempt to find the lowest rates possible for the borrower.
+	/// </summary>
 	public class LoanFinderService {
 		private ILenderRepository _lenderRepo;
 		public const int MINIMUM_LOAN_AMOUNT = 1000;
@@ -23,6 +28,7 @@ namespace QuoteCalculator.Utilities {
 			List<Lender> availableLenders = _lenderRepo.GetLenders()
 				.OrderBy(l => l.InterestRate).ToList();
 			
+			// Iterate over all lenders until we can satisfy the request (or until we have no more lenders).
 			foreach (var lender in availableLenders){
 				if (request.IsSatisfied()) return request;
 
