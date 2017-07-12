@@ -8,8 +8,8 @@ using QuoteCalculator.Repositories;
 namespace QuoteCalculator.Utilities {
 
 	/// <summary>
-	/// Responsible for taking requests for loans from borrows and creating loans from the available list
-	/// of Zopa lenders. We attempt to find the lowest rates possible for the borrower.
+	/// Responsible for taking requests for loans from prospective borrowers and creating a loan from the
+	/// available list of Zopa lenders. We attempt to find the lowest rate possible for the borrower.
 	/// </summary>
 	public class LoanFinderService {
 		private ILenderRepository _lenderRepo;
